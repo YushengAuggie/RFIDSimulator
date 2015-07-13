@@ -3,15 +3,24 @@
 public class main {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+
 		//RadarNode node1 = new RadarNode();
-		RadarNode[] node = new RadarNode[9];  //10 Radars
+		int numNode = 10;     //10 Radars
+		RadarNode[] node = new RadarNode[numNode];  
+		
+		for(int i =0;i<numNode;i++)
+		{
+			node[i] = new RadarNode();
+		}
+		
 		//node 0
 		node[0].addLink(node[1], 0.25);
-		/*node[0].addLink(node[8], 0.25);
+		
+		
+		node[0].addLink(node[8], 0.25);
 		node[0].addLink(node[9], 0.25);
 		node[0].addLink(node[7], 0.25);
-		
+	
 		//node 1
 		node[1].addLink(node[8], 0.25);
 		node[1].addLink(node[9], 0.25);
@@ -47,7 +56,7 @@ public class main {
 		node[8].addLink(node[9], 0.25);
 		
 		//node 9 0,1,7,8 already set
-		*/
+		
 	}
 
 }
