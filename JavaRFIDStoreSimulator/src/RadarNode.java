@@ -1,19 +1,14 @@
 import java.util.HashMap;
 
 
-
-public class RadarNode {
-	public HashMap<RadarNode,Double> link; //Double is reserved for future use---possibility
+//a space area 
+public class RadarNode extends area {
+	
 	public double ReadSuccess = 0.95;										
 	public RadarNode() {
-		this.link = new HashMap<RadarNode,Double>();
+		this.link = new HashMap<area,Double>();
 		//System.out.println("node being created");
 	}
 	
-	public void addLink(RadarNode node,double possibility)//add link between 2 nodes
-	{
-		this.link.put(node, possibility);
-		node.link.put(this, possibility);
-	}
 }
 	
