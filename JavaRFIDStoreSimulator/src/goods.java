@@ -3,12 +3,12 @@ import java.lang.String;
 //Commodity in Grocery Store
 public class goods {
 	public String itemName; //not mandatory needed
-	public int goodsId;
-	public double percentage;
+	public Integer goodsId;
+	public Double percentage;
 	private sellingArea inArea; 
 	
 	
-	public goods(int Id, double percent,sellingArea inarea ) 
+	public goods(Integer Id, Double percent,sellingArea inarea ) 
 	{
 		//this.setItemName(itemName);
 		this.goodsId = Id;
