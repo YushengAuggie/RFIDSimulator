@@ -3,14 +3,14 @@ import java.util.Random;
 
 public class purchaseList {
 	public ArrayList<goods> allGoodsList;
-	private int numGoods;
+	private int numGoods=10;
 	public int avePurGoods;  //average purchasing number for one customer.
 	
 	public purchaseList() 
 	{
 		allGoodsList = new ArrayList<goods>();
-		this.setNumGoods(0);
-		this.avePurGoods = 0;
+		this.setNumGoods(10);
+		this.avePurGoods = 8;
 	}
 	
 	
@@ -20,7 +20,9 @@ public class purchaseList {
 	{
 		ArrayList<goods> retArray = new ArrayList<goods>();
 		Random r = new Random();
-		int numGoods = (int) (this.avePurGoods + r.nextGaussian());
+		//ERROR!!!**********************************************************
+		int numGoods = (int) (this.avePurGoods + r.nextGaussian());//ERROR!!!
+		//ERROR!!!**********************************************************
 		for(int i=0; i<numGoods;i++)
 		{
 			Random tempR = new Random();

@@ -51,11 +51,12 @@ public class entry {
 		initialSellingAreaSetting(numSellingArea,sellAreasNode,node);
 		purchaseList allGoods =  initialGoodsInitial(goodsList, sellAreasNode);
 		allGoods.avePurGoods = 5;  //can be changed;
-		int numCustomer = 10;    //number of buying lists		
+		int numCustomer = 10;    //number of buying lists	
 		
-		for(int i=0;i<numCustomer-1;i++)
+		for(int i=0;i<numCustomer;i++)
 		{
 			ArrayList<goods> curList = allGoods.generatePurList();
+			System.out.println(curList);
 			//call find path function ----> ArrayList path = findPath(curList);
 			//print and write path --> excelfile "output.xls"
 		}
