@@ -23,11 +23,30 @@ public class purchaseList {
 		//ERROR!!!**********************************************************
 		int numGoods = (int) (this.avePurGoods + r.nextGaussian());//ERROR!!!
 		//ERROR!!!**********************************************************
+		
+		Random random = new Random();
 		for(int i=0; i<numGoods;i++)
 		{
 			Random tempR = new Random();
 			int index = tempR.nextInt(this.getNumGoods());
-			retArray.add(this.allGoodsList.get(index));
+			goods curGoods = this.allGoodsList.get(index);
+			boolean PassSameAreaItem = false;
+			
+			for(goods preGoods:retArray){
+				if(preGoods.getInArea() == curGoods.getInArea())
+					PassSameAreaItem = true;
+			}
+			//if curGoods in the area has purchased before
+			// 95% this costomer won't buy curGoods
+			int randomInt = random.nextInt(95);;
+			if(PassSameAreaItem==true){
+				if(randomInt>90){
+					retArray.add(curGoods);
+				}
+			}
+			else{
+				retArray.add(curGoods);
+			}
 		}
 		
 		return retArray;

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MoveAction;
 import javax.xml.crypto.KeySelector.Purpose;
 
 import org.apache.commons.csv.CSVFormat;
@@ -50,16 +51,30 @@ public class entry {
 		initialRadarSetting(numRadar, node);
 		initialSellingAreaSetting(numSellingArea,sellAreasNode,node);
 		purchaseList allGoods =  initialGoodsInitial(goodsList, sellAreasNode);
+		
 		allGoods.avePurGoods = 5;  //can be changed;
 		int numCustomer = 10;    //number of buying lists	
 		
-		for(int i=0;i<numCustomer;i++)
+		ArrayList<ArrayList<goods>> bigListForAllPurchasingRecords = new ArrayList<ArrayList<goods>>();
+		//saving all single customer recordsinto a big array
+		
+		for(int i=0;i<numCustomer;i++)//this big for loop is for display all the 
+										//purchasing behaviours records it has been generated
 		{
-			ArrayList<goods> curList = allGoods.generatePurList();
-			System.out.println(curList);
-			//call find path function ----> ArrayList path = findPath(curList);
-			//print and write path --> excelfile "output.xls"
+			ArrayList<goods> curList = allGoods.generatePurList();//single customer puchasing records
+			for(goods g: curList){//not mandatory needed
+				//System.out.print("itemName: "+g.itemName+" ");
+				System.out.print("goodsId: "+g.goodsId+" ");
+				System.out.print("percentage: "+g.percentage+" ");
+				System.out.println("inArea: "+g.getInArea().areaId+" ");
+				
+			}
+			System.out.println();
+			bigListForAllPurchasingRecords.add(curList);
 		}
+		//call find path function ----> ArrayList path = findPath(curList);
+		//print and write path --> excelfile "output.xls"
+		
 		
 		System.out.println("program end");	
 		
@@ -199,6 +214,46 @@ public class entry {
 		}
 		
 		return retPurList;
+	}
+	
+	//find path, input a single customer purchasing records
+	//find the smallest path for finding all goods
+	//change pathList for Rifd records
+	public static void findPath(ArrayList<ArrayList<area>> bigPathList, ArrayList<goods> oneCustomerPurchaseList, ArrayList<area> curList, int curGoodNo, int nextGoodNo){
+		if(curGoodNo == oneCustomerPurchaseList.size()-1) return;
+		
+		if(move == true){
+			area curArea = oneCustomerPurchaseList.get(curGoodNo).getInArea();
+			area nextArea = oneCustomerPurchaseList.get(nextGoodNo).getInArea();
+		}
+		else{
+			curArea
+			nextArea
+		}
+		
+		
+		if(curArea == nextArea){
+			bigPathList.add(new ArrayList<area>(curList));
+			curGoodNo = nextGoodNo;
+			nextGoodNo = nextGoodNo + 1;
+			move = true;
+		} 
+		
+		
+		
+		
+		//ArrayList<area> curList = new ArrayList<area>();
+		
+		
+		//Here I use GREEDY and DFS, 
+		//keep search for neighbor area(Radar/SellingArea) 
+		//Till reach the next goods' area
+		
+		area curArea = new area(1); 
+		
+		
+		
+		return retList;
 	}
 	
 	
