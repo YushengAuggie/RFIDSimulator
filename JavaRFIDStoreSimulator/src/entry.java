@@ -41,11 +41,13 @@ import org.apache.commons.csv.CSVRecord;
 
 public class entry {
 
+	static int numRadar = 10;     //10 Radars
+	static RadarNode[] node = new RadarNode[numRadar]; 
+	static int numSellingArea = 10;
+	static sellingArea[] sellAreasNode = new sellingArea[numSellingArea];
+
 	public static void main(String[] args) throws IOException {
-		int numRadar = 10;     //10 Radars
-		RadarNode[] node = new RadarNode[numRadar]; 
-		int numSellingArea = 10;
-		sellingArea[] sellAreasNode = new sellingArea[numSellingArea];
+		
 		String goodsList = "C:\\Users\\DavidThinkle\\Documents\\GitHub\\RFIDSimulator\\JavaRFIDStoreSimulator\\src\\file\\goodsList.csv";
 		
 		initialRadarSetting(numRadar, node);
@@ -67,17 +69,23 @@ public class entry {
 				System.out.print("goodsId: "+g.goodsId+" ");
 				System.out.print("percentage: "+g.percentage+" ");
 				System.out.println("inArea: "+g.getInArea().areaId+" ");
+				ArrayList<ArrayList<area>> bigPathList = new ArrayList<ArrayList<area>>();
 				
 			}
+			
+			ArrayList<ArrayList<area>> bigPathList = new ArrayList<ArrayList<area>>();
+			//call find path function ----> ArrayList path = findPath(curList);
+			//print and write path --> excelfile "output.xls"
+			//******************************
+			findPath(bigPathList , curList, new ArrayList<area>(), 0, 1, node[0], curList.get(1).getInArea());
+			System.out.print("bigPathList: "+bigPathList+" ");
 			System.out.println();
 			bigListForAllPurchasingRecords.add(curList);
 		}
-		//call find path function ----> ArrayList path = findPath(curList);
-		//print and write path --> excelfile "output.xls"
 		
+	
 		
 		System.out.println("program end");	
-		
 		
 	}
 	
@@ -215,30 +223,30 @@ public class entry {
 		
 		return retPurList;
 	}
-	
+
 	//find path, input a single customer purchasing records
 	//find the smallest path for finding all goods
 	//change pathList for Rifd records
-	public static void findPath(ArrayList<ArrayList<area>> bigPathList, ArrayList<goods> oneCustomerPurchaseList, ArrayList<area> curList, int curGoodNo, int nextGoodNo){
+	public static void findPath(ArrayList<ArrayList<area>> bigPathList, ArrayList<goods> oneCustomerPurchaseList, ArrayList<area> curList, int curGoodNo, int nextGoodNo, area curArea, area nextArea){
+		
 		if(curGoodNo == oneCustomerPurchaseList.size()-1) return;
-		
-		if(move == true){
-			area curArea = oneCustomerPurchaseList.get(curGoodNo).getInArea();
-			area nextArea = oneCustomerPurchaseList.get(nextGoodNo).getInArea();
-		}
-		else{
-			curArea
-			nextArea
-		}
-		
-		
+		//if(curArea==node[0]) return;
 		if(curArea == nextArea){
 			bigPathList.add(new ArrayList<area>(curList));
 			curGoodNo = nextGoodNo;
 			nextGoodNo = nextGoodNo + 1;
-			move = true;
+			//move = true;
+			curArea = oneCustomerPurchaseList.get(curGoodNo).getInArea();
+			nextArea = oneCustomerPurchaseList.get(nextGoodNo).getInArea();
+			findPath(bigPathList, oneCustomerPurchaseList, curList,  curGoodNo, nextGoodNo, curArea, nextArea);
 		} 
 		
+		if(curList.contains(curArea)) return;
+		curList.add(curArea);
+		for(area linedArea:curArea.link.keySet()){
+			findPath(bigPathList, oneCustomerPurchaseList, curList,  curGoodNo, nextGoodNo, linedArea, nextArea);
+			curList.remove(curList.size()-1);
+		}
 		
 		
 		
@@ -249,12 +257,12 @@ public class entry {
 		//keep search for neighbor area(Radar/SellingArea) 
 		//Till reach the next goods' area
 		
-		area curArea = new area(1); 
 		
 		
 		
-		return retList;
+		
+		return;
 	}
 	
-	
+
 }
