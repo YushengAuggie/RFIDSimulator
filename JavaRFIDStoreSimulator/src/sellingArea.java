@@ -19,5 +19,8 @@ public class sellingArea extends area {
 		return this.hasGoods.remove(gd);
 	}
 	
-	
+	/*public sellingArea (area anotherAR){
+		this.areaId = anotherAR.areaId;
+		this.link = anotherAR.link;
+	}*/
 }

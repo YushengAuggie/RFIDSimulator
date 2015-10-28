@@ -2,12 +2,13 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.lang.instrument.ClassDefinition;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MoveAction;
-import javax.xml.crypto.KeySelector.Purpose;
+
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
@@ -57,7 +58,7 @@ public class entry {
 		purchaseList allGoods =  initialGoodsInitial(goodsList, sellAreasNode);
 		
 		allGoods.avePurGoods = 5;  //can be changed;
-		int numCustomer = 10;    //number of buying lists	
+		int numCustomer = 1;    //number of buying lists	
 		
 		ArrayList<ArrayList<goods>> bigListForAllPurchasingRecords = new ArrayList<ArrayList<goods>>();
 		//saving all single customer recordsinto a big array
@@ -82,8 +83,9 @@ public class entry {
 			ArrayList<area> areaList = goodsListToAreaList(curList);
 			
 			
-			//findPath(bigPathList , curList, new ArrayList<area>(), 0, 1, node[0], curList.get(1).getInArea());
-			//System.out.print("bigPathList: "+bigPathList+" ");
+			ArrayList<area> pathList = findPath(areaList);
+			System.out.print("pathList: ");
+			printAreaList(pathList);
 			System.out.println();
 			bigListForAllPurchasingRecords.add(curList);
 		}
@@ -247,10 +249,11 @@ public class entry {
 	
 	
 	
-	//find path, input a single customer purchasing records
+	//find path, input a single customer purchasing goods in area records
 	//find the smallest path for finding all goods
-	//change pathList for Rifd records
-	public static void findPath(ArrayList<ArrayList<area>> bigPathList, ArrayList<goods> oneCustomerPurchaseList, ArrayList<area> curList, int curGoodNo, int nextGoodNo, area curArea, area nextArea){
+	//change pathList for Rifd record
+	
+	public static ArrayList<area> findPath(ArrayList<area> goodsAreaList){
 	/*
 		//System.out.println(curList);
 		if(curGoodNo == oneCustomerPurchaseList.size()-1) return;
@@ -274,34 +277,106 @@ public class entry {
 	*/
 		
 		
-		//ArrayList<area> curList = new ArrayList<area>();
+		ArrayList<area> retList = new ArrayList<area>();
 		
 		Queue<area> queue = new LinkedList<area>();
-		queue.add(curArea);
-		int thisLevel = 1;
-		int start;
-		while( queue.peek()!=null ){
-			start = 0;
-			while(thisLevel > 0){
-				area tempArea = queue.poll();
+		//int goodsNum = 0;
+		queue.add(node[0]);//at first add start point node[0] (RadarNode)	
+		retList.add(node[0]);
+		//int curGoodsAreaNo = 0;
+		int nextGoodsAreaNo = 0;
+		
+		HashMap<area, area> thisComeFrom = new HashMap<area, area>(); //key: this node, value: it comes from, 
+		//this variable is used for back tracking the path in BFS
+		while(nextGoodsAreaNo < goodsAreaList.size()){
+			
+			
+			
+			area curArea = queue.poll();
+			
+			for(area ar:curArea.link.keySet()){
 				
-				if(thisLevel > 0){
-					
+				
+				if(retList.contains( goodsAreaList.get(nextGoodsAreaNo) ) ){
+					nextGoodsAreaNo++;
+					break;
+				}//been passed by already-->purchased already
+				
+				if(!thisComeFrom.containsKey(ar)){
+					System.out.println("thisComeFrom add key "+ ar.areaId+" comef value" +curArea.areaId);
+					thisComeFrom.put(ar, curArea);
+					queue.add(ar);
 				}
+				//add comeFrom record
+				//System.out.println(ar.areaId);
+				//printAreaList(retList);
+				
+				
+				if(goodsAreaList.get(nextGoodsAreaNo).equals(ar)) {
+					
+					nextGoodsAreaNo++;
+					
+					ArrayList<area> tempList = new ArrayList<area>();
+					
+					while( !thisComeFrom.get(ar).equals( retList.get(retList.size()-1) )){
+						
+						//System.out.println("adding "+ ar.areaId);
+						//printAreaList(tempList);
+						System.out.println(ar.areaId);
+						System.out.println( thisComeFrom.get(ar).areaId );
+						tempList.add(ar);
+						/*
+						if(thisComeFrom.get(ar) instanceof RadarNode){
+							ar = new RadarNode( thisComeFrom.get(ar) );
+						}
+						else{
+							ar = new sellingArea( thisComeFrom.get(ar) );
+						}
+						*/
+						ar = thisComeFrom.get(ar); 
+						System.out.println(ar.areaId);
+						
+						System.out.println(thisComeFrom.get(ar).areaId);
+						System.out.println("LOOP\n\n");
+					}
+					tempList.add(ar);
+					for(int i = tempList.size()-1; i >=0 ;i--){
+						retList.add( tempList.get(i) ); 
+					}//reverse tempList's value add to retList
+					
+					break;
+					
+				}//find it!! add this path to retList
+				
+				
 			}
+			
+			
 		}
+		
+			
+			
+		//at end add path to node[0] (RadarNode)		
+		
 		
 		
 		//Here I use Greedy + BFS, 
 		//keep search for neighbor area(Radar/SellingArea) 
 		//Till reach the next goods' area
+	    //if curArea is in pathList, then skip.(has already passed-->purchased in here)
 		
 		
 		
-		
-		
-		return;
+		return retList;
 	}
-	
+
+
+
+	public static void printAreaList(ArrayList<area> list){
+		for(area ar:list){
+			System.out.println(ar.areaId+" ");
+		}
+		System.out.println();
+	}
 
 }

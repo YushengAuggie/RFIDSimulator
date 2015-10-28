@@ -13,5 +13,6 @@ public abstract class area {
 		this.link.put(node, possibility);
 		node.link.put(this, possibility);
 	}
+	
 
 }

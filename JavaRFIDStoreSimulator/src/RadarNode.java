@@ -9,6 +9,9 @@ public class RadarNode extends area {
 		this.link = new HashMap<area,Double>();
 		//System.out.println("node being created");
 	}
-	
+	/*public RadarNode (area anotherAR){
+		this.areaId = anotherAR.areaId;
+		this.link = anotherAR.link;
+	}*/
 }
 	
