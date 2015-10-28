@@ -3,6 +3,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MoveAction;
 import javax.xml.crypto.KeySelector.Purpose;
@@ -48,7 +50,7 @@ public class entry {
 
 	public static void main(String[] args) throws IOException {
 		
-		String goodsList = "C:\\Users\\DavidThinkle\\Documents\\GitHub\\RFIDSimulator\\JavaRFIDStoreSimulator\\src\\file\\goodsList.csv";
+		String goodsList = "../JavaRFIDStoreSimulator/src/file/goodsList.csv";
 		
 		initialRadarSetting(numRadar, node);
 		initialSellingAreaSetting(numSellingArea,sellAreasNode,node);
@@ -69,16 +71,19 @@ public class entry {
 				System.out.print("goodsId: "+g.goodsId+" ");
 				System.out.print("percentage: "+g.percentage+" ");
 				System.out.println("inArea: "+g.getInArea().areaId+" ");
-				ArrayList<ArrayList<area>> bigPathList = new ArrayList<ArrayList<area>>();
+				//ArrayList<ArrayList<area>> bigPathList = new ArrayList<ArrayList<area>>();
 				
 			}
 			
-			ArrayList<ArrayList<area>> bigPathList = new ArrayList<ArrayList<area>>();
+			//ArrayList<ArrayList<area>> bigPathList = new ArrayList<ArrayList<area>>();
 			//call find path function ----> ArrayList path = findPath(curList);
 			//print and write path --> excelfile "output.xls"
 			//******************************
-			findPath(bigPathList , curList, new ArrayList<area>(), 0, 1, node[0], curList.get(1).getInArea());
-			System.out.print("bigPathList: "+bigPathList+" ");
+			ArrayList<area> areaList = goodsListToAreaList(curList);
+			
+			
+			//findPath(bigPathList , curList, new ArrayList<area>(), 0, 1, node[0], curList.get(1).getInArea());
+			//System.out.print("bigPathList: "+bigPathList+" ");
 			System.out.println();
 			bigListForAllPurchasingRecords.add(curList);
 		}
@@ -223,12 +228,31 @@ public class entry {
 		
 		return retPurList;
 	}
+	
+	//find all goods's areas in purchase lists and saves into a areaList(return);
+	public static ArrayList<area> goodsListToAreaList(ArrayList<goods> goodsList){
+		ArrayList<area> areaList = new ArrayList<area>();
+		
+		for(goods g: goodsList){
+			areaList.add(g.getInArea());
+		}
 
+		System.out.println("\n areaList: ");
+		for(area a: areaList){
+			System.out.print(a.areaId+" ");
+		}
+		System.out.println();
+		return areaList;
+	}
+	
+	
+	
 	//find path, input a single customer purchasing records
 	//find the smallest path for finding all goods
 	//change pathList for Rifd records
 	public static void findPath(ArrayList<ArrayList<area>> bigPathList, ArrayList<goods> oneCustomerPurchaseList, ArrayList<area> curList, int curGoodNo, int nextGoodNo, area curArea, area nextArea){
-		
+	/*
+		//System.out.println(curList);
 		if(curGoodNo == oneCustomerPurchaseList.size()-1) return;
 		//if(curArea==node[0]) return;
 		if(curArea == nextArea){
@@ -247,13 +271,28 @@ public class entry {
 			findPath(bigPathList, oneCustomerPurchaseList, curList,  curGoodNo, nextGoodNo, linedArea, nextArea);
 			curList.remove(curList.size()-1);
 		}
-		
+	*/
 		
 		
 		//ArrayList<area> curList = new ArrayList<area>();
 		
+		Queue<area> queue = new LinkedList<area>();
+		queue.add(curArea);
+		int thisLevel = 1;
+		int start;
+		while( queue.peek()!=null ){
+			start = 0;
+			while(thisLevel > 0){
+				area tempArea = queue.poll();
+				
+				if(thisLevel > 0){
+					
+				}
+			}
+		}
 		
-		//Here I use GREEDY and DFS, 
+		
+		//Here I use Greedy + BFS, 
 		//keep search for neighbor area(Radar/SellingArea) 
 		//Till reach the next goods' area
 		
