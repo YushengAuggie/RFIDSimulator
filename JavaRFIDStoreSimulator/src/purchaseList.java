@@ -20,9 +20,9 @@ public class purchaseList {
 	{
 		ArrayList<goods> retArray = new ArrayList<goods>();
 		Random r = new Random();
-		//ERROR!!!**********************************************************
-		int numGoods = (int) (this.avePurGoods + r.nextGaussian());//ERROR!!!
-		//ERROR!!!**********************************************************
+		//**********************************************************
+		int numGoods = (int) (this.avePurGoods + r.nextGaussian());
+		//**********************************************************
 		
 		Random random = new Random();
 		for(int i=0; i<numGoods;i++)

@@ -63,39 +63,31 @@ public class entry {
 		ArrayList<ArrayList<goods>> bigListForAllPurchasingRecords = new ArrayList<ArrayList<goods>>();
 		//saving all single customer recordsinto a big array
 		
-		for(int i=0;i<numCustomer;i++)//this big for loop is for display all the 
-										//purchasing behaviours records it has been generated
-		{
+		//this big for loop is for display all the 
+		//purchasing behaviours records it has been generated
+		for(int i=0;i<numCustomer;i++){
 			ArrayList<goods> curList = allGoods.generatePurList();//single customer puchasing records
-			for(goods g: curList){//not mandatory needed
+			for(goods g: curList){
 				//System.out.print("itemName: "+g.itemName+" ");
 				System.out.print("goodsId: "+g.goodsId+" ");
 				System.out.print("percentage: "+g.percentage+" ");
 				System.out.println("inArea: "+g.getInArea().areaId+" ");
-				//ArrayList<ArrayList<area>> bigPathList = new ArrayList<ArrayList<area>>();
-				
 			}
 			
-			//ArrayList<ArrayList<area>> bigPathList = new ArrayList<ArrayList<area>>();
-			//call find path function ----> ArrayList path = findPath(curList);
-			//print and write path --> excelfile "output.xls"
-			//******************************
 			ArrayList<area> areaList = goodsListToAreaList(curList);
-			
-			
 			ArrayList<area> pathList = findPath(areaList);
+			
 			System.out.print("pathList: ");
 			printAreaList(pathList);
 			System.out.println();
 			bigListForAllPurchasingRecords.add(curList);
+			//print and write path --> excelfile "output.xls"
+			//******************************
 		}
-		
-	
 		
 		System.out.println("program end");	
 		
 	}
-	
 	
 	//set radar connection
 	public static void initialRadarSetting(int numNode, RadarNode[] node)
@@ -180,7 +172,7 @@ public class entry {
 		sellAreasNode[2].addLink(sellAreasNode[3], 0.33);
 		
 		//selling area 3
-		sellAreasNode[8].addLink(node[3], 0.5);
+		sellAreasNode[3].addLink(node[8], 0.5);
 		//sellAreasNode[3].addLink(sellAreasNode[2], 0.5);
 		
 		//selling area 4
@@ -247,14 +239,11 @@ public class entry {
 		return areaList;
 	}
 	
-	
-	
 	//find path, input a single customer purchasing goods in area records
 	//find the smallest path for finding all goods
 	//change pathList for Rifd record
-	
 	public static ArrayList<area> findPath(ArrayList<area> goodsAreaList){
-
+		
 		ArrayList<area> retList = new ArrayList<area>();
 		
 		Queue<area> queue = new LinkedList<area>();
@@ -262,81 +251,52 @@ public class entry {
 		retList.add(node[0]);
 		int nextGoodsAreaNo = 0;
 		
-		HashMap<area, area> thisComeFrom = new HashMap<area, area>(); //key: this node, value: it comes from, 
-			//this variable is used for back tracking the path in BFS
+		HashMap<area, area> thisComeFrom = new HashMap<area, area>(); 
+		//key: this node, value: it comes from, 
+		//this variable is used for back tracking the path in BFS
 		
-		while(nextGoodsAreaNo < goodsAreaList.size()){
+			while( !queue.isEmpty()&&nextGoodsAreaNo<goodsAreaList.size()){
 			
-			Queue<area> copyQueue = new LinkedList<area>(queue);
-			area cp;
-			while(true){
-				cp = copyQueue.poll();
-				System.out.println("cp "+cp.areaId);
-				if(cp == null) break;
-			}
-			
-			
-			area curArea = queue.poll();
-			if(curArea == null ) break;
-			//System.out.println("access");
-			//System.out.println(curArea);
-			for(area ar:curArea.link.keySet()){
-				
-				
-				if(retList.contains( goodsAreaList.get(nextGoodsAreaNo) ) ){
-					nextGoodsAreaNo++;
-					break;
-				}//been passed by already-->purchased already
-				
-				if(!thisComeFrom.containsKey(ar)){
-					System.out.println("thisComeFrom add key "+ ar.areaId+" comef value" +curArea.areaId);
-					thisComeFrom.put(ar, curArea);
-					queue.add(ar);
-				}
-				//add comeFrom record
-				
-				
-				if(goodsAreaList.get(nextGoodsAreaNo).equals(ar)) {
+				area curArea = queue.poll();
+				for(area ar:curArea.link.keySet()){
+	
+					if(retList.contains( goodsAreaList.get(nextGoodsAreaNo) ) ){
+						nextGoodsAreaNo++;
+						break;
+					}//been passed by already-->purchased already
 					
-					nextGoodsAreaNo++;
-					
-					ArrayList<area> tempList = new ArrayList<area>();
-					//System.out.println(" initial "+ ar.areaId);
-					while(true){
-						System.out.println("last of retList  "+retList.get(retList.size()-1).areaId);
-						
-						
-						tempList.add(ar);
-						
-						/*
-						if(thisComeFrom.get(ar) instanceof RadarNode){
-							ar = new RadarNode( thisComeFrom.get(ar) );
-						}
-						else{
-							ar = new sellingArea( thisComeFrom.get(ar) );
-						}
-						*/
-						ar = thisComeFrom.get(ar); 
-						
-//						System.out.println("interative ");
-						System.out.println(ar.areaId);
-						if(ar.equals( retList.get(retList.size()-1) )) break;
+					if(!thisComeFrom.containsKey(ar)){
+						//System.out.println("thisComeFrom add key "+ ar.areaId+" comef value " +curArea.areaId);
+						thisComeFrom.put(ar, curArea);
+						queue.add(ar);
 					}
-					tempList.add(ar);
-					for(int i = tempList.size()-1; i >=0 ;i--){
-						retList.add( tempList.get(i) ); 
-					}//reverse tempList's value add to retList
+					//add comeFrom record
+					if(goodsAreaList.get(nextGoodsAreaNo).equals(ar)) {
+	
+						ArrayList<area> tempList = new ArrayList<area>();
+						while(true){
+							//System.out.println("last of retList  "+retList.get(retList.size()-1).areaId);
+							tempList.add(ar);
+							ar = thisComeFrom.get(ar); 
+							//System.out.println(ar.areaId);
+							if(ar.equals( retList.get(retList.size()-1) )) break;
+						}
+						tempList.add(ar);
+						for(int i = tempList.size()-1; i >=0 ;i--){
+							retList.add( tempList.get(i) ); 
+						}//reverse tempList's value add to retList
+						
+						queue.clear();
+						thisComeFrom.clear();
+						queue.add(goodsAreaList.get(nextGoodsAreaNo));//next time start area should be this one
+						nextGoodsAreaNo++;
+						break;
+						
+					}//find it!! add this path to retList
 					
-					break;
-					
-				}//find it!! add this path to retList
-				
-				
-			}
-			
+			}//while
 			
 		}
-		
 			
 			
 		//at end add path to node[0] (RadarNode)		
@@ -349,15 +309,12 @@ public class entry {
 	    //if curArea is in pathList, then skip.(has already passed-->purchased in here)
 		
 		
-		
 		return retList;
 	}
 
-
-
 	public static void printAreaList(ArrayList<area> list){
 		for(area ar:list){
-			System.out.println(ar.areaId+" ");
+			System.out.print(ar.areaId+" ");
 		}
 		System.out.println();
 	}

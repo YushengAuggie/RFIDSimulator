@@ -15,7 +15,10 @@ public abstract class area {
 	}
 	
 	public boolean equals(Object other){
-		if(other instanceof area) return false;
+//		if(other instanceof area) {
+//			System.out.println("ERROR, Input Not an Instance of area while using area.equal");
+//			return false;
+//		}
 		return this.areaId == ((area)other).areaId;
 	}
 
