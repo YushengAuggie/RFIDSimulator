@@ -14,5 +14,9 @@ public abstract class area {
 		node.link.put(this, possibility);
 	}
 	
+	public boolean equals(Object other){
+		if(other instanceof area) return false;
+		return this.areaId == ((area)other).areaId;
+	}
 
 }

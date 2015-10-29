@@ -254,46 +254,32 @@ public class entry {
 	//change pathList for Rifd record
 	
 	public static ArrayList<area> findPath(ArrayList<area> goodsAreaList){
-	/*
-		//System.out.println(curList);
-		if(curGoodNo == oneCustomerPurchaseList.size()-1) return;
-		//if(curArea==node[0]) return;
-		if(curArea == nextArea){
-			bigPathList.add(new ArrayList<area>(curList));
-			curGoodNo = nextGoodNo;
-			nextGoodNo = nextGoodNo + 1;
-			//move = true;
-			curArea = oneCustomerPurchaseList.get(curGoodNo).getInArea();
-			nextArea = oneCustomerPurchaseList.get(nextGoodNo).getInArea();
-			findPath(bigPathList, oneCustomerPurchaseList, curList,  curGoodNo, nextGoodNo, curArea, nextArea);
-		} 
-		
-		if(curList.contains(curArea)) return;
-		curList.add(curArea);
-		for(area linedArea:curArea.link.keySet()){
-			findPath(bigPathList, oneCustomerPurchaseList, curList,  curGoodNo, nextGoodNo, linedArea, nextArea);
-			curList.remove(curList.size()-1);
-		}
-	*/
-		
-		
+
 		ArrayList<area> retList = new ArrayList<area>();
 		
 		Queue<area> queue = new LinkedList<area>();
-		//int goodsNum = 0;
 		queue.add(node[0]);//at first add start point node[0] (RadarNode)	
 		retList.add(node[0]);
-		//int curGoodsAreaNo = 0;
 		int nextGoodsAreaNo = 0;
 		
 		HashMap<area, area> thisComeFrom = new HashMap<area, area>(); //key: this node, value: it comes from, 
-		//this variable is used for back tracking the path in BFS
+			//this variable is used for back tracking the path in BFS
+		
 		while(nextGoodsAreaNo < goodsAreaList.size()){
 			
+			Queue<area> copyQueue = new LinkedList<area>(queue);
+			area cp;
+			while(true){
+				cp = copyQueue.poll();
+				System.out.println("cp "+cp.areaId);
+				if(cp == null) break;
+			}
 			
 			
 			area curArea = queue.poll();
-			
+			if(curArea == null ) break;
+			//System.out.println("access");
+			//System.out.println(curArea);
 			for(area ar:curArea.link.keySet()){
 				
 				
@@ -308,8 +294,6 @@ public class entry {
 					queue.add(ar);
 				}
 				//add comeFrom record
-				//System.out.println(ar.areaId);
-				//printAreaList(retList);
 				
 				
 				if(goodsAreaList.get(nextGoodsAreaNo).equals(ar)) {
@@ -317,14 +301,13 @@ public class entry {
 					nextGoodsAreaNo++;
 					
 					ArrayList<area> tempList = new ArrayList<area>();
-					
-					while( !thisComeFrom.get(ar).equals( retList.get(retList.size()-1) )){
+					//System.out.println(" initial "+ ar.areaId);
+					while(true){
+						System.out.println("last of retList  "+retList.get(retList.size()-1).areaId);
 						
-						//System.out.println("adding "+ ar.areaId);
-						//printAreaList(tempList);
-						System.out.println(ar.areaId);
-						System.out.println( thisComeFrom.get(ar).areaId );
+						
 						tempList.add(ar);
+						
 						/*
 						if(thisComeFrom.get(ar) instanceof RadarNode){
 							ar = new RadarNode( thisComeFrom.get(ar) );
@@ -334,10 +317,10 @@ public class entry {
 						}
 						*/
 						ar = thisComeFrom.get(ar); 
-						System.out.println(ar.areaId);
 						
-						System.out.println(thisComeFrom.get(ar).areaId);
-						System.out.println("LOOP\n\n");
+//						System.out.println("interative ");
+						System.out.println(ar.areaId);
+						if(ar.equals( retList.get(retList.size()-1) )) break;
 					}
 					tempList.add(ar);
 					for(int i = tempList.size()-1; i >=0 ;i--){
