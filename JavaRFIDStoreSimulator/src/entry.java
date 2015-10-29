@@ -337,7 +337,7 @@ public class entry {
 	    try {
 	       // String fileName;
 			//initialize FileWriter object
-	        fileWriter = new FileWriter(outPutFile, true);
+	        fileWriter = new FileWriter(outPutFile, true); //true means appending to this file, false means replace all records 
 	        //initialize CSVPrinter object
 	        csvFilePrinter = new CSVPrinter(fileWriter, csvFileFormat);
 	        
