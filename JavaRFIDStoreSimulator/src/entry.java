@@ -75,12 +75,22 @@ public class entry {
 			}
 			
 			ArrayList<area> areaList = goodsListToAreaList(curList);
-			ArrayList<area> pathList = findPath(areaList);
+			ArrayList<area> pathList = findPath(areaList, node[0]);
+			ArrayList<area> tempList = new ArrayList<area>();
+			//tempList.add(areaList.get(areaList.size()-1));//the last of Path -> start point node[0] (RadarNode)
+			tempList.add(node[0]);
+			ArrayList<area> wayBackToEntryList = findPath(tempList, areaList.get(areaList.size()-1)); 
 			
 			System.out.print("pathList: ");
 			printAreaList(pathList);
 			System.out.println();
-			bigListForAllPurchasingRecords.add(curList);
+			System.out.println("way back: ");
+			printAreaList(wayBackToEntryList);
+			System.out.println();
+			
+			//bigListForAllPurchasingRecords.add(curList);
+			
+			
 			//print and write path --> excelfile "output.xls"
 			//******************************
 		}
@@ -242,13 +252,16 @@ public class entry {
 	//find path, input a single customer purchasing goods in area records
 	//find the smallest path for finding all goods
 	//change pathList for Rifd record
-	public static ArrayList<area> findPath(ArrayList<area> goodsAreaList){
+	public static ArrayList<area> findPath(ArrayList<area> goodsAreaList, area StartPoint){
+		//Here I use Greedy + BFS, 
+		//keep search for neighbor area(Radar/SellingArea) 
+		//Till reach the next goods' area
 		
 		ArrayList<area> retList = new ArrayList<area>();
 		
 		Queue<area> queue = new LinkedList<area>();
-		queue.add(node[0]);//at first add start point node[0] (RadarNode)	
-		retList.add(node[0]);
+		queue.add(StartPoint);//at first add start point node[0] (RadarNode)	
+		retList.add(StartPoint);
 		int nextGoodsAreaNo = 0;
 		
 		HashMap<area, area> thisComeFrom = new HashMap<area, area>(); 
@@ -297,21 +310,10 @@ public class entry {
 			}//while
 			
 		}
-			
-			
-		//at end add path to node[0] (RadarNode)		
-		
-		
-		
-		//Here I use Greedy + BFS, 
-		//keep search for neighbor area(Radar/SellingArea) 
-		//Till reach the next goods' area
-	    //if curArea is in pathList, then skip.(has already passed-->purchased in here)
-		
-		
 		return retList;
 	}
 
+	//print node.areaId in AreaList in one line
 	public static void printAreaList(ArrayList<area> list){
 		for(area ar:list){
 			System.out.print(ar.areaId+" ");
