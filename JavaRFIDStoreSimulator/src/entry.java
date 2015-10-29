@@ -1,5 +1,6 @@
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.lang.instrument.ClassDefinition;
@@ -11,6 +12,7 @@ import java.util.Queue;
 
 
 import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
 
@@ -52,13 +54,13 @@ public class entry {
 	public static void main(String[] args) throws IOException {
 		
 		String goodsList = "../JavaRFIDStoreSimulator/src/file/goodsList.csv";
-		
+		String outPutFile = "../JavaRFIDStoreSimulator/src/file/outPut.csv";
 		initialRadarSetting(numRadar, node);
 		initialSellingAreaSetting(numSellingArea,sellAreasNode,node);
 		purchaseList allGoods =  initialGoodsInitial(goodsList, sellAreasNode);
 		
 		allGoods.avePurGoods = 5;  //can be changed;
-		int numCustomer = 1;    //number of buying lists	
+		int numCustomer = 100;    //number of buying lists	
 		
 		ArrayList<ArrayList<goods>> bigListForAllPurchasingRecords = new ArrayList<ArrayList<goods>>();
 		//saving all single customer recordsinto a big array
@@ -90,9 +92,10 @@ public class entry {
 			
 			//bigListForAllPurchasingRecords.add(curList);
 			
-			
 			//print and write path --> excelfile "output.xls"
+			writeToCSV(curList, areaList, pathList, wayBackToEntryList, outPutFile);
 			//******************************
+			
 		}
 		
 		System.out.println("program end");	
@@ -320,5 +323,80 @@ public class entry {
 		}
 		System.out.println();
 	}
+	
+	//write pucheaseList, areaList, PathList to CSV file
+	public static void writeToCSV(ArrayList<goods> purchaseList, ArrayList<area> purchaseArea, ArrayList<area> pathList, ArrayList<area> wayBackList, String outPutFile){
+		//....
+		//Integer retNum = outPut.size();
+		
+		FileWriter fileWriter = null;
+		CSVPrinter csvFilePrinter = null;
+	    //Create the CSVFormat object with "\n" as a record delimiter
+		CSVFormat csvFileFormat = CSVFormat.EXCEL.withRecordSeparator("\n");
+		 
+	    try {
+	       // String fileName;
+			//initialize FileWriter object
+	        fileWriter = new FileWriter(outPutFile, true);
+	        //initialize CSVPrinter object
+	        csvFilePrinter = new CSVPrinter(fileWriter, csvFileFormat);
+	        
+	        //**********************************************************
+	        //Create CSV file header
+	        //csvFilePrinter.printRecord("Purchase_List", "Purchase_Area", "Path_List",	"WayBack_List");
+	        //**********************************************************
+	        ArrayList<String> purchaseID = new ArrayList<String>();
+	        ArrayList<String> PurchaseAreaID = new ArrayList<String>();
+	        ArrayList<String> pathAreaID = new ArrayList<String>();
+	        ArrayList<String> wayBackID = new ArrayList<String>();
+	        
+	        for(goods curGoods: purchaseList){
+	        	purchaseID.add(curGoods.goodsId.toString());
+	        	PurchaseAreaID.add(curGoods.getInArea().areaId.toString());
+	        }
+	        for(area ar: pathList){
+	        	pathAreaID.add(ar.areaId);
+	        }
+	        for(area ar: wayBackList){
+	        	wayBackID.add(ar.areaId);
+	        }
+	        
+	        String purchaseIDStr = purchaseID.toString();
+	        String purchaseAreaIDStr = PurchaseAreaID.toString();
+	        String pathAreaIDStr = pathAreaID.toString();
+	        String wayBackIDArea = wayBackID.toString();
+	        
+	      //Write a new student object list to the CSV file
+	       
+            ArrayList<String> writeRecord = new ArrayList<String>();
+            writeRecord.add(purchaseIDStr);
+            writeRecord.add(purchaseAreaIDStr);
+            writeRecord.add(pathAreaIDStr);
+            writeRecord.add(wayBackIDArea);
+           
+            System.out.println(writeRecord);
+            csvFilePrinter.printRecord(writeRecord);
+	       
+	      // System.out.println("CSV file was created successfully !!!");
+	         
+	    } catch (Exception e) {
+	        System.out.println("Error in CsvFileWriter !!!");
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            fileWriter.flush();
+	            fileWriter.close();
+	            csvFilePrinter.close();
+	        } catch (IOException e) {
+	            System.out.println("Error while flushing/closing fileWriter/csvPrinter !!!");
+	                e.printStackTrace();
+	            }
+		//System.out.println("End");
+	    	}
+		
+		System.out.println("----Purchase Goods Information of---"+purchaseArea.size()+"--items--Have Been Write to File: "+outPutFile);
+		return;
+	}
+	
+} 
 
-}
