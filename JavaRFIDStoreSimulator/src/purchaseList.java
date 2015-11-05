@@ -38,9 +38,9 @@ public class purchaseList {
 			}
 			//if curGoods in the area has purchased before
 			// 95% this costomer won't buy curGoods
-			int randomInt = random.nextInt(95);;
+			int randomInt = random.nextInt(100);;
 			if(PassSameAreaItem==true){
-				if(randomInt>90){
+				if(randomInt>95){
 					retArray.add(curGoods);
 				}
 			}

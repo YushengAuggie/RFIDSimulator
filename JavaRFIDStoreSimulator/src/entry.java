@@ -5,11 +5,11 @@ import java.io.IOException;
 import java.io.Reader;
 import java.lang.instrument.ClassDefinition;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
-
-
+import java.util.Random;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
@@ -54,13 +54,13 @@ public class entry {
 	public static void main(String[] args) throws IOException {
 		
 		String goodsList = "../JavaRFIDStoreSimulator/src/file/goodsList.csv";
-		String outPutFile = "../JavaRFIDStoreSimulator/src/file/11045000RecordsoutPut.csv";
+		String outPutFile = "../JavaRFIDStoreSimulator/src/file/NEW11045000RecordsoutPut.csv";
 		initialRadarSetting(numRadar, node);
 		initialSellingAreaSetting(numSellingArea,sellAreasNode,node);
 		purchaseList allGoods =  initialGoodsInitial(goodsList, sellAreasNode);
 		
 		allGoods.avePurGoods = 5;  //can be changed;
-		int numCustomer = 4999;    //number of buying lists	
+		int numCustomer = 5000;    //number of buying lists	
 		
 		ArrayList<ArrayList<goods>> bigListForAllPurchasingRecords = new ArrayList<ArrayList<goods>>();
 		//saving all single customer recordsinto a big array
@@ -69,6 +69,25 @@ public class entry {
 		//purchasing behaviours records it has been generated
 		for(int i=0;i<numCustomer;i++){
 			ArrayList<goods> curList = allGoods.generatePurList();//single customer puchasing records
+			
+			//sort
+			Random random = new Random();
+			int randomInt = random.nextInt(100);
+			if(randomInt>3){
+				if(randomInt>40){
+					Collections.sort(curList, new goodsComparator());
+					System.out.println(">40, assending sort");
+				}
+				else{
+					Collections.sort(curList, new goodsComparator());
+					Collections.reverse(curList);
+					System.out.println(">3, <40, descending order");
+				}
+			}
+			else{
+				System.out.println("Less 3%, random order");
+			}
+			
 			for(goods g: curList){
 				//System.out.print("itemName: "+g.itemName+" ");
 				System.out.print("goodsId: "+g.goodsId+" ");
@@ -398,5 +417,17 @@ public class entry {
 		return;
 	}
 	
+	//sort goods in the lists based on goods' id value
+//	static public ArrayList<goods> sortGoods(ArrayList<goods> inputGoodsList){
+//		ArrayList<goods> retList = new ArrayList<goods>();
+//		for(int i = 0; i< inputGoodsList.size(); i++){
+//			goods curGoods = inputGoodsList.get(i);
+//			for(int j = 0)
+//		}
+//		return retList;
+//	}
+	
 } 
+
+
 
