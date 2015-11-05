@@ -54,7 +54,7 @@ public class entry {
 	public static void main(String[] args) throws IOException {
 		
 		String goodsList = "../JavaRFIDStoreSimulator/src/file/goodsList.csv";
-		String outPutFile = "../JavaRFIDStoreSimulator/src/file/1104_5000Records_outPut.csv";
+		String outPutFile = "../JavaRFIDStoreSimulator/src/file/11045000RecordsoutPut.csv";
 		initialRadarSetting(numRadar, node);
 		initialSellingAreaSetting(numSellingArea,sellAreasNode,node);
 		purchaseList allGoods =  initialGoodsInitial(goodsList, sellAreasNode);
@@ -343,7 +343,7 @@ public class entry {
 	        
 	        //**********************************************************
 	        //Create CSV file header
-	        //csvFilePrinter.printRecord("Purchase_List", "Purchase_Area", "Path_List",	"WayBack_List");
+	        csvFilePrinter.printRecord("Purchase_List", "Purchase_Area", "Path_List",	"WayBack_List");
 	        //**********************************************************
 	        ArrayList<String> purchaseID = new ArrayList<String>();
 	        ArrayList<String> PurchaseAreaID = new ArrayList<String>();
