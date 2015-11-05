@@ -54,13 +54,13 @@ public class entry {
 	public static void main(String[] args) throws IOException {
 		
 		String goodsList = "../JavaRFIDStoreSimulator/src/file/goodsList.csv";
-		String outPutFile = "../JavaRFIDStoreSimulator/src/file/outPut.csv";
+		String outPutFile = "../JavaRFIDStoreSimulator/src/file/1104_5000Records_outPut.csv";
 		initialRadarSetting(numRadar, node);
 		initialSellingAreaSetting(numSellingArea,sellAreasNode,node);
 		purchaseList allGoods =  initialGoodsInitial(goodsList, sellAreasNode);
 		
 		allGoods.avePurGoods = 5;  //can be changed;
-		int numCustomer = 100;    //number of buying lists	
+		int numCustomer = 5000;    //number of buying lists	
 		
 		ArrayList<ArrayList<goods>> bigListForAllPurchasingRecords = new ArrayList<ArrayList<goods>>();
 		//saving all single customer recordsinto a big array
@@ -116,31 +116,31 @@ public class entry {
 		//node 0
 		node[0].addLink(node[1], 0.25);		
 		node[0].addLink(node[8], 0.25);
-		node[0].addLink(node[9], 0.25);
-		node[0].addLink(node[7], 0.25);
+//		node[0].addLink(node[9], 0.25);
+		//node[0].addLink(node[7], 0.25);
 	
 		//node 1
 		node[1].addLink(node[8], 0.25);
-		node[1].addLink(node[9], 0.25);
-		node[1].addLink(node[2], 0.25);
+//		node[1].addLink(node[9], 0.25);
+//		node[1].addLink(node[2], 0.25);
 		
 		//node 2
-		node[2].addLink(node[1], 0.30);
-		node[2].addLink(node[3], 0.30);
-		
+//		node[2].addLink(node[1], 0.30);
+//		node[2].addLink(node[3], 0.30);
+//		
 		//node 3
-		node[3].addLink(node[4], 0.25);
-		node[3].addLink(node[7], 0.25);
-		node[3].addLink(node[8], 0.25);
-		
+//		node[3].addLink(node[4], 0.25);
+//		node[3].addLink(node[7], 0.25);
+//		node[3].addLink(node[8], 0.25);
+//		
 		//node 4
-		node[4].addLink(node[5], 0.30);
-		node[4].addLink(node[7], 0.30);
-		
+//		node[4].addLink(node[5], 0.30);
+//		node[4].addLink(node[7], 0.30);
+//		
 		//node 5
-		node[5].addLink(node[6], 0.25);
-		node[5].addLink(node[7], 0.25);
-		node[5].addLink(node[9], 0.25);
+//		node[5].addLink(node[6], 0.25);
+//		node[5].addLink(node[7], 0.25);
+//		node[5].addLink(node[9], 0.25);
 		
 		//node 6
 		node[6].addLink(node[7], 0.30);
@@ -337,7 +337,7 @@ public class entry {
 	    try {
 	       // String fileName;
 			//initialize FileWriter object
-	        fileWriter = new FileWriter(outPutFile, true); //true means appending to this file, false means replace all records 
+	        fileWriter = new FileWriter(outPutFile, false); //*****true means appending to this file, false means replace all records 
 	        //initialize CSVPrinter object
 	        csvFilePrinter = new CSVPrinter(fileWriter, csvFileFormat);
 	        
