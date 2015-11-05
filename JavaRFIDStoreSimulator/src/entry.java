@@ -60,7 +60,7 @@ public class entry {
 		purchaseList allGoods =  initialGoodsInitial(goodsList, sellAreasNode);
 		
 		allGoods.avePurGoods = 5;  //can be changed;
-		int numCustomer = 5000;    //number of buying lists	
+		int numCustomer = 4999;    //number of buying lists	
 		
 		ArrayList<ArrayList<goods>> bigListForAllPurchasingRecords = new ArrayList<ArrayList<goods>>();
 		//saving all single customer recordsinto a big array
@@ -337,13 +337,13 @@ public class entry {
 	    try {
 	       // String fileName;
 			//initialize FileWriter object
-	        fileWriter = new FileWriter(outPutFile, false); //*****true means appending to this file, false means replace all records 
+	        fileWriter = new FileWriter(outPutFile, true); //*****true means appending to this file, false means replace all records 
 	        //initialize CSVPrinter object
 	        csvFilePrinter = new CSVPrinter(fileWriter, csvFileFormat);
 	        
 	        //**********************************************************
 	        //Create CSV file header
-	        csvFilePrinter.printRecord("Purchase_List", "Purchase_Area", "Path_List",	"WayBack_List");
+	        //csvFilePrinter.printRecord("Purchase_List", "Purchase_Area", "Path_List",	"WayBack_List");
 	        //**********************************************************
 	        ArrayList<String> purchaseID = new ArrayList<String>();
 	        ArrayList<String> PurchaseAreaID = new ArrayList<String>();
