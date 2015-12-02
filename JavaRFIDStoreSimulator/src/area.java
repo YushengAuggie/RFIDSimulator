@@ -18,5 +18,8 @@ public abstract class area {
 
 		return this.areaId == ((area)other).areaId;
 	}
+	public String toString(){
+		return this.areaId;
+	}
 
 }

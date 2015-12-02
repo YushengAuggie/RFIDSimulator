@@ -1,3 +1,5 @@
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -7,6 +9,7 @@ import java.lang.instrument.ClassDefinition;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
@@ -112,15 +115,18 @@ public class entry {
 			//bigListForAllPurchasingRecords.add(curList);
 			
 			//print and write path --> excelfile "output.xls"
-			writeToCSV(curList, areaList, pathList, wayBackToEntryList, outPutFile);
-			//******************************
 			
+			//writeToCSV(curList, areaList, pathList, wayBackToEntryList, outPutFile);
+			//******************************
+			writeToTXT("curList.txt",curList);
 		}
 		
 		System.out.println("program end");	
 		
 	}
 	
+
+
 	//set radar connection
 	public static void initialRadarSetting(int numNode, RadarNode[] node)
 	{
@@ -417,15 +423,73 @@ public class entry {
 		return;
 	}
 	
-	//sort goods in the lists based on goods' id value
-//	static public ArrayList<goods> sortGoods(ArrayList<goods> inputGoodsList){
-//		ArrayList<goods> retList = new ArrayList<goods>();
-//		for(int i = 0; i< inputGoodsList.size(); i++){
-//			goods curGoods = inputGoodsList.get(i);
-//			for(int j = 0)
-//		}
-//		return retList;
-//	}
+	//write list to text file, one record per line
+	public static void writeToTXT(String FilePath, ArrayList<Object> curList){
+		try{
+			//String content = "This is the content to write into file";
+			File file = new File(FilePath);
+			if(!file.exists()){
+				System.out.println("New File " + FilePath);
+				file.createNewFile();
+			}
+			else{
+				System.out.println("Write to old file " + FilePath);
+			}
+			FileWriter fw = new FileWriter(file.getAbsoluteFile());
+			BufferedWriter bw = new BufferedWriter(fw);
+			
+			//extraxt content
+			ArrayList<String> writeList = new ArrayList<String>();
+			String line = null;
+			
+			Iterator<Object> iterator = curList.iterator();
+			while(iterator.hasNext()){
+				String s = iterator.next().toString();
+				bw.append(s, 0,s.length());
+				bw.newLine();
+			}
+			//bw.write(content);
+			bw.close();
+			System.out.println("Done Write to " + FilePath);
+			
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+	/*private static void writeToTXT(String filePath, ArrayList<goods> curList) {
+		// TODO Auto-generated method stub
+		//String content = "This is the content to write into file";
+		try{
+			File file = new File(filePath);
+			if(!file.exists()){
+				System.out.println("New File " + filePath);
+				file.createNewFile();
+			}
+			else{
+					System.out.println("Write to old file " + filePath);
+			}
+			
+			FileWriter fw = new FileWriter(file.getAbsoluteFile());
+			BufferedWriter bw = new BufferedWriter(fw);
+			
+			//extraxt content
+			ArrayList<String> writeList = new ArrayList<String>();
+			String line = null;
+			
+			Iterator<goods> iterator = curList.iterator();
+			while(iterator.hasNext()){
+				String s = iterator.next().toString();
+				bw.append(s, 0,s.length());
+				bw.newLine();
+			}
+			//bw.write(content);
+			bw.close();
+			System.out.println("Done Write to " + filePath);
+			
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+	}*/
 	
 } 
 

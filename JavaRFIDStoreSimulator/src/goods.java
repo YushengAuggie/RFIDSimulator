@@ -34,6 +34,8 @@ public class goods {
 		this.inArea = inarea;
 		inarea.addGoods(this);
 	}
-	
+	public String toString(){
+		return this.goodsId.toString();
+	}
 
 }
