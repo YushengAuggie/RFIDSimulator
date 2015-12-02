@@ -63,7 +63,7 @@ public class entry {
 		purchaseList allGoods =  initialGoodsInitial(goodsList, sellAreasNode);
 		
 		allGoods.avePurGoods = 5;  //can be changed;
-		int numCustomer = 5000;    //number of buying lists	
+		int numCustomer = 5000;    //*****number of purchasing lists****	
 		
 		ArrayList<ArrayList<goods>> bigListForAllPurchasingRecords = new ArrayList<ArrayList<goods>>();
 		//saving all single customer recordsinto a big array
@@ -104,21 +104,27 @@ public class entry {
 			//tempList.add(areaList.get(areaList.size()-1));//the last of Path -> start point node[0] (RadarNode)
 			tempList.add(node[0]);
 			ArrayList<area> wayBackToEntryList = findPath(tempList, areaList.get(areaList.size()-1)); 
-			
+			//if printing in console needed then make this part not comments
+			/*
 			System.out.print("pathList: ");
 			printAreaList(pathList);
 			System.out.println();
 			System.out.println("way back: ");
 			printAreaList(wayBackToEntryList);
 			System.out.println();
+			*/
+			//end [if printing in console needed then make this part not comments]
 			
 			//bigListForAllPurchasingRecords.add(curList);
 			
 			//print and write path --> excelfile "output.xls"
-			
 			//writeToCSV(curList, areaList, pathList, wayBackToEntryList, outPutFile);
 			//******************************
-			writeToTXT("curList.txt",curList);
+			//write to TXT file
+			writeToTXT("1purchaseGoodsNo.txt",curList);
+			writeToTXT("1goodsAreaList.txt",areaList);
+			writeToTXT("1pathList.txt",pathList);
+			writeToTXT("1wayBackToEntryList.txt",wayBackToEntryList);
 		}
 		
 		System.out.println("program end");	
@@ -424,7 +430,7 @@ public class entry {
 	}
 	
 	//write list to text file, one record per line
-	public static void writeToTXT(String FilePath, ArrayList<Object> curList){
+	public static <T> void writeToTXT(String FilePath, ArrayList<T> curList){
 		try{
 			//String content = "This is the content to write into file";
 			File file = new File(FilePath);
@@ -433,21 +439,23 @@ public class entry {
 				file.createNewFile();
 			}
 			else{
-				System.out.println("Write to old file " + FilePath);
+				//System.out.println("Write to old file " + FilePath);
 			}
-			FileWriter fw = new FileWriter(file.getAbsoluteFile());
+			FileWriter fw = new FileWriter(file.getAbsoluteFile(),true);
 			BufferedWriter bw = new BufferedWriter(fw);
 			
 			//extraxt content
 			ArrayList<String> writeList = new ArrayList<String>();
 			String line = null;
 			
-			Iterator<Object> iterator = curList.iterator();
+			Iterator<Object> iterator = (Iterator<Object>) curList.iterator();
 			while(iterator.hasNext()){
 				String s = iterator.next().toString();
 				bw.append(s, 0,s.length());
-				bw.newLine();
+				bw.append(' ');
 			}
+			bw.newLine();
+			//bw.append("\n\r");
 			//bw.write(content);
 			bw.close();
 			System.out.println("Done Write to " + FilePath);
@@ -456,40 +464,7 @@ public class entry {
 			e.printStackTrace();
 		}
 	}
-	/*private static void writeToTXT(String filePath, ArrayList<goods> curList) {
-		// TODO Auto-generated method stub
-		//String content = "This is the content to write into file";
-		try{
-			File file = new File(filePath);
-			if(!file.exists()){
-				System.out.println("New File " + filePath);
-				file.createNewFile();
-			}
-			else{
-					System.out.println("Write to old file " + filePath);
-			}
-			
-			FileWriter fw = new FileWriter(file.getAbsoluteFile());
-			BufferedWriter bw = new BufferedWriter(fw);
-			
-			//extraxt content
-			ArrayList<String> writeList = new ArrayList<String>();
-			String line = null;
-			
-			Iterator<goods> iterator = curList.iterator();
-			while(iterator.hasNext()){
-				String s = iterator.next().toString();
-				bw.append(s, 0,s.length());
-				bw.newLine();
-			}
-			//bw.write(content);
-			bw.close();
-			System.out.println("Done Write to " + filePath);
-			
-		}catch(IOException e){
-			e.printStackTrace();
-		}
-	}*/
+	
 	
 } 
 
