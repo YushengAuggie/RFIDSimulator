@@ -121,10 +121,10 @@ public class entry {
 			//writeToCSV(curList, areaList, pathList, wayBackToEntryList, outPutFile);
 			//******************************
 			//write to TXT file
-			writeToTXT("1purchaseGoodsNo.txt",curList);
-			writeToTXT("1goodsAreaList.txt",areaList);
-			writeToTXT("1pathList.txt",pathList);
-			writeToTXT("1wayBackToEntryList.txt",wayBackToEntryList);
+			writeToTXT("newpurchaseGoodsNo.txt",curList);
+			writeToTXT("newgoodsAreaList.txt",areaList);
+			writeToTXT("newpathList.txt",pathList);
+			writeToTXT("newwayBackToEntryList.txt",wayBackToEntryList);
 		}
 		
 		System.out.println("program end");	
@@ -198,6 +198,7 @@ public class entry {
 			sellAreasNode[i].areaId = id;
 			
 		}
+		//selling area 2 Currently is deleted
 		
 		//selling area 0
 		sellAreasNode[0].addLink(node[0], 0.2);
@@ -208,12 +209,12 @@ public class entry {
 		
 		//selling area 1
 		sellAreasNode[1].addLink(node[1], 0.5);
-		sellAreasNode[1].addLink(node[2], 0.5);
+		//sellAreasNode[1].addLink(node[2], 0.5);
 		
-		//selling area 2
-		sellAreasNode[2].addLink(node[3], 0.33);
-		sellAreasNode[2].addLink(node[2], 0.33);
-		sellAreasNode[2].addLink(sellAreasNode[3], 0.33);
+		//selling area 2 Currently is deleted
+		//sellAreasNode[2].addLink(node[3], 0.33);
+		//sellAreasNode[2].addLink(node[2], 0.33);
+		//sellAreasNode[2].addLink(sellAreasNode[3], 0.33);
 		
 		//selling area 3
 		sellAreasNode[3].addLink(node[8], 0.5);
